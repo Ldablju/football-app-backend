@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Team {
+  id        String @id @default(cuid())
+  name      String
+  points    Int
+  winMatch  Int
+  drawMatch Int
+  lossMatch Int
+  stadion   String
+  logoUrl   String
+  fansId    User[]
+}
+
+model User {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  name              String?
+  role              Role     @default(USER)
+  password          String
+  passwordSalt      String
+  description       String?
+  isProfileComplete Boolean  @default(false)
+  resetPasswordCode String?
+  activationToken   String
+  avatarUrl         String?
+  isActivated       Boolean? @default(false)
+  favoriteTeam      Team?    @relation(fields: [favoriteTeamId], references: [id])
+  favoriteTeamId    String?
+}
+
+enum Role {
+  ADMIN
+  USER
+  MODERATOR
+}
