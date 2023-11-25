@@ -10,6 +10,13 @@ export type SignUpInput = {
   password: string
 }
 
+export type CreateUser = {
+  email: string
+  password: string
+  passwordSalt: string
+  activationToken: string
+}
+
 export type UserData = {
   id: string
   name: string | null

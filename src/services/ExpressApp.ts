@@ -1,4 +1,6 @@
 import express, { Application } from "express"
+import dotenv from "dotenv"
+dotenv.config()
 
 import { AuthRoute, TeamRoute, UserRoute } from "../routes"
 import cors from "cors"

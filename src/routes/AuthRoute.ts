@@ -1,10 +1,19 @@
-import express from "express";
-import { SignInController, SignUpController } from "../controllers";
+import express from "express"
+import {
+  ActivateUserController,
+  ChangePasswordController,
+  SendResetPasswordController,
+  SignInController,
+  SignUpController,
+} from "../controllers"
 
-const router = express.Router();
+const router = express.Router()
 
-router.post("/signin", SignInController);
+router.post("/signin", SignInController)
+router.post("/signup", SignUpController)
 
-router.post("/signup", SignUpController);
+router.get("/activate/:token", ActivateUserController)
+router.post("/send-reset-password", SendResetPasswordController)
+router.post("/change-password", ChangePasswordController)
 
-export { router as AuthRoute };
+export { router as AuthRoute }

@@ -11,12 +11,12 @@ const router = express.Router()
 
 router.use(Authenticate)
 
-router.get("/getById/:teamId", GetTeamByIdController)
-router.get("/getAll", GetAllTeamsController)
+router.get("/all", GetAllTeamsController)
+router.get("/:teamId", GetTeamByIdController)
 
 router.use(CheckRole)
 
-router.patch("/update", UpdateTeamController)
-router.post("/create", CreateTeamController)
+router.patch("/", UpdateTeamController)
+router.post("/", CreateTeamController)
 
 export { router as TeamRoute }

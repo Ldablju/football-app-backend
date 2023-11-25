@@ -1,23 +1,13 @@
-import express from "express";
-import { Authenticate } from "../middleware";
-import {
-  GetUserByIdController,
-  UpdateUserController,
-  ActivateUserController,
-  SendResetPasswordController,
-  ChangePasswordController,
-} from "../controllers";
+import express from "express"
+import { Authenticate } from "../middleware"
+import { CheckNameController, GetProfileController, UpdateUserController } from "../controllers"
 
-const router = express.Router();
+const router = express.Router()
 
-router.get("/activate/:token", ActivateUserController);
-router.post("/sendResetPassword", SendResetPasswordController);
-router.post("/changePassword", ChangePasswordController);
+router.use(Authenticate)
 
-router.use(Authenticate);
+router.get("/", GetProfileController)
+router.get("/check-name", CheckNameController)
+router.patch("/", UpdateUserController)
 
-router.get("", GetUserByIdController);
-
-router.patch("/", UpdateUserController);
-
-export { router as UserRoute };
+export { router as UserRoute }
