@@ -17,6 +17,15 @@ export type CreateUser = {
   activationToken: string
 }
 
+export type ResetPasswordInput = {
+  email: string
+}
+
+export type ChangePasswordInput = {
+  restartPasswordCode: string
+  newPassword: string
+}
+
 export type UserData = {
   id: string
   name: string | null

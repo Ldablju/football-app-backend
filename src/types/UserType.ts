@@ -21,13 +21,8 @@ export type UpdateUserResponse = {
   favoriteTeamId: string | null
 }
 
-export type ResetPasswordInput = {
-  email: string
-}
-
-export type ChangePasswordInput = {
-  restartPasswordCode: string
-  newPassword: string
+export type DeleteUser = {
+  id: string
 }
 
 export enum UserRole {

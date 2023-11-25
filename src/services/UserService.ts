@@ -1,4 +1,4 @@
-import { FindUserConfig } from "../types"
+import { FindUserConfig, UpdateUserInput } from "../types"
 import { prisma } from "./Database"
 import { User } from "@prisma/client"
 
@@ -14,5 +14,21 @@ export const userService = {
   },
   GetUserByName: async (name: string) => {
     return await prisma.user.findFirst({ where: { name } })
+  },
+  UpdateUser: async (id: string, data: UpdateUserInput) => {
+    return await prisma.user.update({
+      where: { id: id },
+      data: {
+        name: data.name,
+        avatarUrl: data.avatarUrl,
+        favoriteTeam: {
+          connect: { id: data.favoriteTeam },
+        },
+        description: data.description,
+      },
+    })
+  },
+  DeleteUser: async (userId: string) => {
+    return await prisma.user.delete({ where: { id: userId } })
   },
 }
