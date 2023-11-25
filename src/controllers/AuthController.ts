@@ -33,7 +33,7 @@ export const SignInController = async (req: Request, res: Response, next: NextFu
         name: user.name,
         description: user.description,
         avatarUrl: user.avatarUrl,
-        favoriteTeam: user.favoriteTeam,
+        favoriteTeam: user.favouriteTeam,
       },
       token,
     })

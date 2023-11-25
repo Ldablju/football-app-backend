@@ -32,8 +32,8 @@ model User {
   activationToken   String
   avatarUrl         String?
   isActivated       Boolean? @default(false)
-  favoriteTeam      Team?    @relation(fields: [favoriteTeamId], references: [id])
-  favoriteTeamId    String?
+  favouriteTeam      Team?    @relation(fields: [favouriteTeamId], references: [id])
+  favouriteTeamId    String?
 }
 
 enum Role {

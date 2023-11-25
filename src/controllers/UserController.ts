@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import { prisma } from "../services/Database"
 import { ResponseHelper } from "../helpers"
-import { DeleteUser, UpdateUserInput, UpdateUserResponse, UserPayload } from "../types"
+import { UpdateUserInput, UpdateUserResponse, UserPayload } from "../types"
 import { userService } from "../services/UserService"
 
 export const GetProfileController = async (req: Request, res: Response, next: NextFunction) => {
@@ -13,7 +13,7 @@ export const GetProfileController = async (req: Request, res: Response, next: Ne
       return ResponseHelper(res, 400, "User not found", null)
     }
 
-    return ResponseHelper(res, 200, "User data send successfully", user)
+    return ResponseHelper(res, 200, "User data sent successfully", user)
   } catch (error) {
     console.log(error)
     return ResponseHelper(res, 500, "Somthing went wrong with server", null)
@@ -28,9 +28,9 @@ export const CheckNameController = async (req: Request, res: Response, next: Nex
   try {
     const user = await prisma.user.findFirst({ where: { name: name } })
 
-    if (user) return ResponseHelper(res, 200, "User found", { exists: false })
+    if (user) return ResponseHelper(res, 200, "User found", { exists: true })
 
-    return ResponseHelper(res, 200, "User not exists", { exists: true })
+    return ResponseHelper(res, 200, "User not exists", { exists: false })
   } catch (error) {
     console.log(error)
     return ResponseHelper(res, 500, "Somthing went wrong with server", null)
@@ -38,21 +38,16 @@ export const CheckNameController = async (req: Request, res: Response, next: Nex
 }
 
 export const UpdateUserController = async (req: Request, res: Response, next: NextFunction) => {
-  const { name, avatarUrl, description, favoriteTeam }: UpdateUserInput = req.body
+  const { name, description, favouriteTeam }: UpdateUserInput = req.body
   const { id } = req.user as UserPayload
   try {
-    const updateUser = await userService.UpdateUser(id, { name, avatarUrl, description, favoriteTeam })
+    const updateUser = await userService.UpdateUser(id, { name, description, favouriteTeam })
 
     if (!updateUser) return ResponseHelper(res, 404, "Somthing went wrong with update user", null)
 
-    const data: UpdateUserResponse = {
-      id: updateUser.id,
-      name: updateUser.name,
-      description: updateUser.description,
-      favoriteTeamId: updateUser.favoriteTeamId,
-    }
+    const { password, passwordSalt, favouriteTeamId, ...userData } = updateUser
 
-    return ResponseHelper(res, 200, "User was updated successfully", data)
+    return ResponseHelper(res, 200, "User was updated successfully", userData)
   } catch (error) {
     console.log(error)
     return ResponseHelper(res, 500, "Somthing went wrong with server", null)
@@ -63,13 +58,10 @@ export const DeleteUserController = async (req: Request, res: Response, next: Ne
   const { id } = req.params
 
   try {
-    const deleteUser = await userService.DeleteUser(id)
-
-    console.log(deleteUser)
-
+    await userService.DeleteUser(id)
     return ResponseHelper(res, 200, "User was deleted succesfully", null)
-  } catch (error) {
-    console.log(error)
+  } catch (error: any) {
+    if (error.code === "P2025") return ResponseHelper(res, 400, "User not found", null)
     return ResponseHelper(res, 500, "Somthing went wrong with server", null)
   }
 }

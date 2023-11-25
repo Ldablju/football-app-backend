@@ -9,20 +9,15 @@ export type FindUserConfig = {
 
 export type UpdateUserInput = {
   name: string
-  avatarUrl: string
-  description: string
-  favoriteTeam: string
+  description?: string
+  favouriteTeam?: string
 }
 
 export type UpdateUserResponse = {
   id: string
   name: string | null
   description: string | null
-  favoriteTeamId: string | null
-}
-
-export type DeleteUser = {
-  id: string
+  favouriteTeamId: string | null
 }
 
 export enum UserRole {

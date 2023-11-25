@@ -20,11 +20,14 @@ export const userService = {
       where: { id: id },
       data: {
         name: data.name,
-        avatarUrl: data.avatarUrl,
-        favoriteTeam: {
-          connect: { id: data.favoriteTeam },
+        favouriteTeam: {
+          connect: { id: data.favouriteTeam },
         },
+        isProfileComplete: true,
         description: data.description,
+      },
+      include: {
+        favouriteTeam: true,
       },
     })
   },
